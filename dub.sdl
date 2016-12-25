@@ -1,0 +1,5 @@
+name "arcana"
+description "A minimal D application."
+authors "Mihail K"
+copyright "Copyright © 2016, Mihail K"
+license "MIT"
