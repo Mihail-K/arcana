@@ -1,6 +1,7 @@
 
 module arcana.grammar.parser;
 
+import arcana.grammar.ast;
 import arcana.grammar.lexer;
 import arcana.grammar.rule;
 import arcana.grammar.ruleset;
@@ -24,46 +25,52 @@ public:
         advance;
     }
 
-    void start()
+    ExpressionNode start()
     {
-        expression;
+        auto node = expression;
         expect(Ruleset.EndOfFile);
+        return node;
     }
 
-    void expression()
+    ExpressionNode expression()
     {
-        additive;
+        return additive;
     }
 
-    void additive()
+    ExpressionNode additive()
     {
-        multiplicative;
+        auto left = multiplicative;
 
-        while(accept(Ruleset.Plus, Ruleset.Minus))
+        if(accept(Ruleset.Plus, Ruleset.Minus))
         {
-            multiplicative;
+            return new AdditiveNode(left, _prev, additive);
         }
+
+        return left;
     }
 
-    void multiplicative()
+    ExpressionNode multiplicative()
     {
-        terminal;
+        auto left = terminal;
 
-        while(accept(Ruleset.Times, Ruleset.Divide, Ruleset.Modulo))
+        if(accept(Ruleset.Times, Ruleset.Divide, Ruleset.Modulo))
         {
-            terminal;
+            return new MultiplicativeNode(left, _prev, multiplicative);
         }
+
+        return left;
     }
 
-    void terminal()
+    TerminalNode terminal()
     {
         if(accept(Ruleset.Identifier))
         {
-            // TODO
+            return new IdentifierNode(_prev);
         }
         else
         {
             enforce(false);
+            assert(false);
         }
     }
 
@@ -93,7 +100,7 @@ private:
 
 unittest
 {
-    auto lexer  = Lexer("a + b");
+    auto lexer  = Lexer("a + b * c");
     auto parser = Parser(lexer);
 
     try
