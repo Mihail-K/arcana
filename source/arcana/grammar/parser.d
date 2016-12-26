@@ -51,7 +51,7 @@ public:
 
     ExpressionNode relational()
     {
-        auto left = additive;
+        auto left = shift;
 
         with(Ruleset)
         {
@@ -59,6 +59,18 @@ public:
             {
                 return new RelationalNode(left, _prev, relational);
             }
+        }
+
+        return left;
+    }
+
+    ExpressionNode shift()
+    {
+        auto left = additive;
+
+        if(accept(Ruleset.LeftShift, Ruleset.RightShift))
+        {
+            return new ShiftNode(left, _prev, shift);
         }
 
         return left;

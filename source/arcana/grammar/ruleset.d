@@ -60,6 +60,16 @@ enum Ruleset : Rule
         term!("%")
     ),
 
+    LeftShift = Rule(
+        "LeftShift",
+        term!("<<")
+    ),
+
+    RightShift = Rule(
+        "RightShift",
+        term!(">>")
+    ),
+
     GreaterOrEqual = Rule(
         "GreaterOrEqual",
         term!(">=")

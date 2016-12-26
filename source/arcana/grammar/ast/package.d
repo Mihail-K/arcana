@@ -9,4 +9,5 @@ public import arcana.grammar.ast.identifier_node;
 public import arcana.grammar.ast.multiplicative_node;
 public import arcana.grammar.ast.node;
 public import arcana.grammar.ast.relational_node;
+public import arcana.grammar.ast.shift_node;
 public import arcana.grammar.ast.terminal_node;
