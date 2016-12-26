@@ -21,19 +21,6 @@ public:
     }
 
     @property
-    Token[] array()
-    {
-        Token[] array;
-
-        while(!empty)
-        {
-            array ~= next;
-        }
-
-        return array;
-    }
-
-    @property
     bool empty() const
     {
         return !_input || _input.length == 0;
@@ -99,12 +86,43 @@ private:
     }
 }
 
-unittest
+version(unittest)
 {
     import std.algorithm;
     import std.array;
 
-    auto lexer = Lexer("a + b");
-    import std.stdio;
-    writefln("%(%s,\n%)", lexer.array);
+    @property
+    Token[] tokens(Lexer lexer)
+    {
+        Token[] array;
+
+        while(!lexer.empty)
+        {
+            array ~= lexer.next;
+        }
+
+        return array;
+    }
+}
+
+unittest
+{
+    auto result = Lexer("a + b").tokens;
+
+    with(Ruleset)
+    {
+        assert(result.map!(t => t.text).array == ["a", "+", "b"]);
+        assert(result.map!(t => t.rule).array == cast(Rule[]) [Identifier, Plus, Identifier]);
+    }
+}
+
+unittest
+{
+    auto result = Lexer("# This is a comment.\na - b").tokens;
+
+    with(Ruleset)
+    {
+        assert(result.map!(t => t.text).array == ["a", "-", "b"]);
+        assert(result.map!(t => t.rule).array == cast(Rule[]) [Identifier, Minus, Identifier]);
+    }
 }
