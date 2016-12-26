@@ -1,10 +1,25 @@
 
-module arcana.lexer.matcher;
+module arcana.grammar.matcher;
 
 import std.array;
 import std.string;
 
 alias Matcher = string function(string);
+
+template predicate(alias pred)
+{
+    enum predicate = function string(string input)
+    {
+        if(input.length && pred(input[0]))
+        {
+            return [input[0]];
+        }
+        else
+        {
+            return null;
+        }
+    };
+}
 
 template term(literals...) if(literals.length > 0)
 {

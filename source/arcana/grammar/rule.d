@@ -1,7 +1,7 @@
 
-module arcana.lexer.rule;
+module arcana.grammar.rule;
 
-import arcana.lexer.matcher;
+import arcana.grammar.matcher;
 
 struct Rule
 {
@@ -10,10 +10,16 @@ private:
     Matcher _matcher;
 
 public:
-    this(string name, Matcher matcher)
+    this(string name, Matcher matcher = null)
     {
         _name    = name;
         _matcher = matcher;
+    }
+
+    @property
+    bool internal() const
+    {
+        return _matcher is null;
     }
 
     @property
@@ -26,5 +32,10 @@ public:
     Matcher matcher() const
     {
         return _matcher;
+    }
+
+    string opCall(string input) const
+    {
+        return _matcher ? _matcher(input) : null;
     }
 }

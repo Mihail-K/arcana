@@ -1,7 +1,7 @@
 
-module arcana.lexer.token;
+module arcana.grammar.token;
 
-import arcana.lexer.rule;
+import arcana.grammar.rule;
 
 struct Token
 {
