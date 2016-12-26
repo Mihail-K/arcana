@@ -35,9 +35,9 @@ enum Ruleset : Rule
 
     /+ - Operators - +/
 
-    Divide = Rule(
-        "Divide",
-        term!("/")
+    Plus = Rule(
+        "Plus",
+        term!("+")
     ),
 
     Minus = Rule(
@@ -45,19 +45,69 @@ enum Ruleset : Rule
         term!("-")
     ),
 
+    Times = Rule(
+        "Times",
+        term!("*")
+    ),
+
+    Divide = Rule(
+        "Divide",
+        term!("/")
+    ),
+
     Modulo = Rule(
         "Modulo",
         term!("%")
     ),
 
-    Plus = Rule(
-        "Plus",
-        term!("+")
+    GreaterOrEqual = Rule(
+        "GreaterOrEqual",
+        term!(">=")
     ),
 
-    Times = Rule(
-        "Times",
-        term!("*")
+    Greater = Rule(
+        "Greater",
+        term!(">")
+    ),
+
+    LessOrEqual = Rule(
+        "LessOrEqual",
+        term!("<=")
+    ),
+
+    Less = Rule(
+        "Less",
+        term!("<")
+    ),
+
+    Equals = Rule(
+        "Equals",
+        term!("==")
+    ),
+
+    Assign = Rule(
+        "Assign",
+        term!("=")
+    ),
+    
+    NotEquals = Rule(
+        "NotEquals",
+        term!("!=")
+    ),
+
+    Bang = Rule(
+        "Bang",
+        term!("!")
+    ),
+
+    LeftParen = Rule(
+        "LeftParen",
+        term!("(")
+    ),
+
+    RightParen = Rule(
+        "RightParen",
+        term!(")")
     ),
 
     /+ - Identifiers - +/

@@ -34,7 +34,34 @@ public:
 
     ExpressionNode expression()
     {
-        return additive;
+        return equality;
+    }
+
+    ExpressionNode equality()
+    {
+        auto left = relational;
+
+        if(accept(Ruleset.Equals, Ruleset.NotEquals))
+        {
+            return new EqualityNode(left, _prev, equality);
+        }
+
+        return left;
+    }
+
+    ExpressionNode relational()
+    {
+        auto left = additive;
+
+        with(Ruleset)
+        {
+            if(accept(Greater, GreaterOrEqual, Less, LessOrEqual))
+            {
+                return new RelationalNode(left, _prev, relational);
+            }
+        }
+
+        return left;
     }
 
     ExpressionNode additive()
@@ -61,11 +88,17 @@ public:
         return left;
     }
 
-    TerminalNode terminal()
+    ExpressionNode terminal()
     {
         if(accept(Ruleset.Identifier))
         {
             return new IdentifierNode(_prev);
+        }
+        else if(accept(Ruleset.LeftParen))
+        {
+            auto node = expression;
+            expect(Ruleset.RightParen);
+            return node;
         }
         else
         {
@@ -94,13 +127,13 @@ private:
 
     void expect(Rule[] rules...)
     {
-        enforce(accept(rules));
+        enforce(accept(rules), "Got: " ~ _curr.text);
     }
 }
 
 unittest
 {
-    auto lexer  = Lexer("a + b * c");
+    auto lexer  = Lexer("(a + b) * c > d == e <= f");
     auto parser = Parser(lexer);
 
     try
