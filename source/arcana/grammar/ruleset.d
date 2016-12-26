@@ -5,12 +5,14 @@ import arcana.grammar.matcher;
 import arcana.grammar.rule;
 
 import std.ascii;
+import std.traits;
 
 enum Ruleset : Rule
 {
     Whitespace = Rule(
         "Whitespace",
-        repeat!(predicate!(isWhite))
+        repeat!(predicate!(isWhite)),
+        Discard.yes
     ),
     
     /+ - Comments - +/
@@ -27,19 +29,35 @@ enum Ruleset : Rule
                 )
             ),
             term!("\n")
-        )
+        ),
+        Discard.yes
     ),
 
     /+ - Operators - +/
+
+    Divide = Rule(
+        "Divide",
+        term!("/")
+    ),
 
     Minus = Rule(
         "Minus",
         term!("-")
     ),
 
+    Modulo = Rule(
+        "Modulo",
+        term!("%")
+    ),
+
     Plus = Rule(
         "Plus",
         term!("+")
+    ),
+
+    Times = Rule(
+        "Times",
+        term!("*")
     ),
 
     /+ - Identifiers - +/
@@ -68,6 +86,21 @@ enum Ruleset : Rule
     Indent = Rule("Indent"),
 
     Dedent = Rule("Dedent")
+}
+
+Rule[] ruleset()
+{
+    Rule[] ruleset;
+
+    foreach(rule; EnumMembers!(Ruleset))
+    {
+        static if(!rule.internal)
+        {
+            ruleset ~= rule;
+        }
+    }
+
+    return ruleset;
 }
 
 unittest

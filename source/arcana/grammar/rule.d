@@ -3,17 +3,25 @@ module arcana.grammar.rule;
 
 import arcana.grammar.matcher;
 
+enum Discard : bool
+{
+    yes = true,
+    no  = false
+}
+
 struct Rule
 {
 private:
     string  _name;
     Matcher _matcher;
+    Discard _discard;
 
 public:
-    this(string name, Matcher matcher = null)
+    this(string name, Matcher matcher = null, Discard discard = Discard.no)
     {
         _name    = name;
         _matcher = matcher;
+        _discard = discard;
     }
 
     @property
@@ -32,6 +40,12 @@ public:
     Matcher matcher() const
     {
         return _matcher;
+    }
+
+    @property
+    Discard discard() const
+    {
+        return _discard;
     }
 
     string opCall(string input) const
