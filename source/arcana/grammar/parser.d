@@ -34,7 +34,31 @@ public:
 
     ExpressionNode expression()
     {
-        return equality;
+        return assignment;
+    }
+
+    ExpressionNode assignment()
+    {
+        auto left = logical;
+
+        if(accept(Ruleset.Assign))
+        {
+            return new AssignmentNode(left, _prev, assignment);
+        }
+
+        return left;
+    }
+
+    ExpressionNode logical()
+    {
+        auto left = equality;
+
+        if(accept(Ruleset.LogicAnd, Ruleset.LogicOr))
+        {
+            return new LogicalNode(left, _prev, logical);
+        }
+
+        return left;
     }
 
     ExpressionNode equality()

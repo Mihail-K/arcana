@@ -110,6 +110,36 @@ enum Ruleset : Rule
         term!("!")
     ),
 
+    LogicAnd = Rule(
+        "LogicAnd",
+        term!("&&")
+    ),
+
+    LogicOr = Rule(
+        "LogicOr",
+        term!("||")
+    ),
+
+    Power = Rule(
+        "Power",
+        term!("^^")
+    ),
+
+    BitAnd = Rule(
+        "BitAnd",
+        term!("&")
+    ),
+
+    BitOr = Rule(
+        "BitOr",
+        term!("|")
+    ),
+
+    BitXor = Rule(
+        "BitXor",
+        term!("^")
+    ),
+
     LeftParen = Rule(
         "LeftParen",
         term!("(")
