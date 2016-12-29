@@ -4,6 +4,7 @@ module arcana.grammar.ast;
 public import arcana.grammar.ast.additive_node;
 public import arcana.grammar.ast.assignment_node;
 public import arcana.grammar.ast.binary_node;
+public import arcana.grammar.ast.bitwise_node;
 public import arcana.grammar.ast.expression_node;
 public import arcana.grammar.ast.equality_node;
 public import arcana.grammar.ast.identifier_node;

@@ -49,6 +49,21 @@ public:
         return left;
     }
 
+    ExpressionNode ternary()
+    {
+        auto left = logical;
+
+        if(accept(Ruleset.TernaryThen))
+        {
+            auto node = expression;
+            expect(Ruleset.TernaryElse);
+
+            return new TernaryNode(left, node, expression);
+        }
+
+        return left;
+    }
+
     ExpressionNode logical()
     {
         auto left = equality;
@@ -75,7 +90,7 @@ public:
 
     ExpressionNode relational()
     {
-        auto left = shift;
+        auto left = bitwise;
 
         with(Ruleset)
         {
@@ -88,13 +103,16 @@ public:
         return left;
     }
 
-    ExpressionNode shift()
+    ExpressionNode bitwise()
     {
         auto left = additive;
 
-        if(accept(Ruleset.LeftShift, Ruleset.RightShift))
+        with(Ruleset)
         {
-            return new ShiftNode(left, _prev, shift);
+            if(accept(LeftShift, RightShift, BitAnd, BitOr, BitXor))
+            {
+                return new BitwiseNode(left, _prev, bitwite);
+            }
         }
 
         return left;

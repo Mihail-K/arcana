@@ -140,6 +140,16 @@ enum Ruleset : Rule
         term!("^")
     ),
 
+    TernaryThen = Rule(
+        "TernaryThen",
+        term!("?")
+    ),
+
+    TernaryElse = Rule(
+        "TernaryElse",
+        term!(":")
+    ),
+
     LeftParen = Rule(
         "LeftParen",
         term!("(")
