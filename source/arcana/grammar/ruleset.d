@@ -33,7 +33,36 @@ enum Ruleset : Rule
         Discard.yes
     ),
 
+    /+ - Literals - +/
+
+    DecimalInt = Rule(
+        "DecimalInt",
+        allOf!(
+            range!('0', '9'),
+            option!(
+                repeat!(
+                    oneOf!(
+                        range!('0', '9'),
+                        term!("_")
+                    )
+                )
+            )
+        )
+    ),
+
+    /+ - Keywords - +/
+
+    Fn = Rule(
+        "Fn",
+        term!("fn")
+    ),
+
     /+ - Operators - +/
+
+    Comma = Rule(
+        "Comma",
+        term!(",")
+    ),
 
     Plus = Rule(
         "Plus",
@@ -90,6 +119,11 @@ enum Ruleset : Rule
         term!("<")
     ),
 
+    Lambda = Rule(
+        "Lambda",
+        term!("=>")
+    ),
+
     Equals = Rule(
         "Equals",
         term!("==")
@@ -140,13 +174,13 @@ enum Ruleset : Rule
         term!("^")
     ),
 
-    TernaryThen = Rule(
-        "TernaryThen",
+    Query = Rule(
+        "Query",
         term!("?")
     ),
 
-    TernaryElse = Rule(
-        "TernaryElse",
+    Colon = Rule(
+        "Colon",
         term!(":")
     ),
 

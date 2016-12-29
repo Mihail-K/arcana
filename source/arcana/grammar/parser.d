@@ -34,7 +34,60 @@ public:
 
     ExpressionNode expression()
     {
+        return lambda;
+    }
+
+    ExpressionNode lambda()
+    {
+        if(accept(Ruleset.Fn))
+        {
+            auto params = parameterList;
+            ExpressionNode type = null;
+
+            if(accept(Ruleset.Colon))
+            {
+                type = expression;
+            }
+
+            expect(Ruleset.Lambda);
+            return new LambdaNode(params, type, expression);
+        }
+
         return assignment;
+    }
+
+    ParameterListNode parameterList()
+    {
+        ParameterNode[] params;
+
+        if(accept(Ruleset.LeftParen))
+        {
+            while(!accept(Ruleset.RightParen))
+            {
+                params ~= parameter;
+                if(_curr.rule != Ruleset.RightParen)
+                {
+                    expect(Ruleset.Comma);
+                }
+            }
+        }
+
+        return new ParameterListNode(params);
+    }
+
+    ParameterNode parameter()
+    {
+        expect(Ruleset.Identifier);
+        auto name = _prev;
+
+        if(accept(Ruleset.Colon))
+        {
+            return new ParameterNode(name, expression);
+        }
+        else
+        {
+            return new ParameterNode(name);
+        }
     }
 
     ExpressionNode assignment()
@@ -53,10 +106,10 @@ public:
     {
         auto left = logical;
 
-        if(accept(Ruleset.TernaryThen))
+        if(accept(Ruleset.Query))
         {
             auto node = expression;
-            expect(Ruleset.TernaryElse);
+            expect(Ruleset.Colon);
 
             return new TernaryNode(left, node, expression);
         }
@@ -111,7 +164,7 @@ public:
         {
             if(accept(LeftShift, RightShift, BitAnd, BitOr, BitXor))
             {
-                return new BitwiseNode(left, _prev, bitwite);
+                return new BitwiseNode(left, _prev, bitwise);
             }
         }
 
@@ -147,6 +200,10 @@ public:
         if(accept(Ruleset.Identifier))
         {
             return new IdentifierNode(_prev);
+        }
+        else if(accept(Ruleset.DecimalInt))
+        {
+            return new IntegerNode(_prev);
         }
         else if(accept(Ruleset.LeftParen))
         {
@@ -198,4 +255,12 @@ unittest
     {
         assert(false);
     }
+}
+
+unittest
+{
+    auto lexer  = Lexer("fn(a: int, b: int) => a + b");
+    auto parser = Parser(lexer);
+    
+    assert(parser.start);
 }
